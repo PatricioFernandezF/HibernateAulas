@@ -9,7 +9,7 @@
 		<property name="connection.password"></property>
 		<property name="show_sql">true</property>
 		
-		<mapping class="net.hibernateClase.Aula" />
+		<mapping class="net.hibernateClase.Entidades.Aula" />
 		
 	</session-factory>
 </hibernate-configuration>
