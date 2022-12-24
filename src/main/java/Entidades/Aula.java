@@ -17,7 +17,6 @@ public class Aula implements Serializable {
 	private String tituloAula;
 	private float metros;
 	
-	
 	public long getId() {
 		return id;
 	}
