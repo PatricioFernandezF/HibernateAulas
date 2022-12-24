@@ -5,6 +5,7 @@ public class Principal {
 		AulaManager manager = new AulaManager();
 		manager.setup();
 		manager.create();
+		manager.informacion(1);
 		manager.exit();
 	}
 }
