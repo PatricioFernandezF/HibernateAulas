@@ -6,43 +6,58 @@ import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 
+import Entidades.Aula;
 import Entidades.Ordenador;
 
 public class OrdenadorManager {
-	protected SessionFactory sessionFactory;
 
-	public void setup() {
 
-		final StandardServiceRegistry registry = new StandardServiceRegistryBuilder().configure().build();
-		try {
-			sessionFactory = new MetadataSources(registry).buildMetadata().buildSessionFactory();
-		} catch (Exception ex) {
-			StandardServiceRegistryBuilder.destroy(registry);
-
-		}
-	}
-
-	public void exit() {
-		// code to close Hibernate Session factory
-	}
 
 	public void create() {
 		Ordenador ordenador = new Ordenador();
-
+		
+		
 		ordenador.setMarca("Acer");
 		ordenador.setAnno(2005);
 		ordenador.setTipo("Sobremesa");
-		Session session = sessionFactory.openSession();
+		
+		Ordenador ordenador2=new Ordenador("Lenovo",2022,"Sobremesa");
+		Ordenador ordenador3=new Ordenador("HP",2020,"Portatil");
+		
+		
+		
+		Session session = ManagerPrincipal.sessionFactory.openSession();
 		session.beginTransaction();
 		session.save(ordenador);
+		session.save(ordenador2);
+		session.save(ordenador3);
 		session.getTransaction().commit();
 		session.close();
+		
+		setAula(1,1);
+		setAula(2,1);
+		setAula(3,1);
 
+	}
+	
+	public void setAula(long idOr,long idAul) {
+		Ordenador ordenador = obtener(idOr);
+		
+		AulaManager manageraula = new AulaManager();
+		Aula aula=manageraula.obtener(1);
+		
+		ordenador.setAula(aula);
+
+		Session session = ManagerPrincipal.sessionFactory.openSession();
+		session.beginTransaction();
+		session.update(ordenador);
+		session.getTransaction().commit();
+		session.close();
 	}
 	
 	
 	public Ordenador obtener(long id) {
-		Session session = sessionFactory.openSession();
+		Session session = ManagerPrincipal.sessionFactory.openSession();
 		Ordenador ordenador = session.get(Ordenador.class, id);
 		session.close();
 		return ordenador;
@@ -69,7 +84,7 @@ public class OrdenadorManager {
 		if (anno > -1)
 			ordenador.setAnno(anno);
 
-		Session session = sessionFactory.openSession();
+		Session session = ManagerPrincipal.sessionFactory.openSession();
 		session.beginTransaction();
 		session.update(ordenador);
 		session.getTransaction().commit();
@@ -80,7 +95,7 @@ public class OrdenadorManager {
 	public void delete(long id) {
 		Ordenador ordenador = obtener(id);
 		
-		Session session = sessionFactory.openSession();
+		Session session = ManagerPrincipal.sessionFactory.openSession();
 		session.beginTransaction();
 		session.delete(ordenador);
 		session.getTransaction().commit();
